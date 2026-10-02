@@ -1,5 +1,17 @@
 import { IdentityProfileSchema, IdentityProfile } from '../schemas/identity.schema';
-import { Login } from '@asppibra/contracts/http';
+export interface LoginResponse {
+  success: boolean;
+  message: string;
+  accessToken?: string;
+  user?: {
+    id: number;
+    email: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    role: string;
+  };
+  details?: string;
+}
 
 const HONO_URL = process.env.NEXT_PUBLIC_API_URL || 'https://staging.app.asppibra.com';
 
@@ -49,7 +61,7 @@ export const identityClient = {
     if (!res.ok) throw new Error('Login falhou');
     
     const json = await res.json();
-    return json as Login.LoginResponse;
+    return json as LoginResponse;
   },
 
   /**
