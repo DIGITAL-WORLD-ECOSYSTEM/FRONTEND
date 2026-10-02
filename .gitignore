@@ -119,3 +119,25 @@ next-env.d.ts
 # Local temporary artifacts
 scratch/
 ts_errors.txt
+
+# ------------------------------------------------------
+# 🔒 REFORÇO DE SEGURANÇA E AMBIENTE
+# ------------------------------------------------------
+.dev.vars.*
+!.dev.vars.example
+.wrangler/
+.mf/
+credentials.json
+service-account.json
+
+# AI Assistants & Scratch
+.antigravity/
+.gemini/
+.claude/
+.cursor/
+.agents/
+temp/
+tmp/
+*.tmp
+*.temp
+*.bak
