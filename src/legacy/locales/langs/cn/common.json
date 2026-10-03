@@ -15,6 +15,7 @@
     "description": "连接物理世界与数字世界的终极桥梁。基于区块链的基础设施，通过去中心化且无国界的网络，将真实世界资产 (RWA)、DeFi 与人工智能 (AI) 完美结合。",
     "buttons": {
       "_comment": "页面顶部的核心 CTA。",
+      "documentos": "文件",
       "whitepaper": "白皮书",
       "ecossistema": "生态系统"
     }

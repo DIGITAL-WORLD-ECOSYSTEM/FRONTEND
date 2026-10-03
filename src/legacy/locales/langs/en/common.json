@@ -15,6 +15,7 @@
     "description": "The definitive bridge between the physical and digital worlds. Blockchain-based infrastructure connecting RWA to DeFi with AI over a decentralized and borderless network.",
     "buttons": {
       "_comment": "Primary CTAs at the top of the page.",
+      "documentos": "Documents",
       "whitepaper": "Whitepaper",
       "ecossistema": "Ecosystem"
     }

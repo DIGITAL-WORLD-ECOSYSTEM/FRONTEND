@@ -15,6 +15,7 @@
     "description": "A ponte definitiva entre o mundo físico e o digital. Infraestrutura baseada em blockchain que conecta RWA ao DeFi com IA sobre uma rede descentralizada e sem fronteiras.",
     "buttons": {
       "_comment": "CTAs primários do topo da página.",
+      "documentos": "Documentos",
       "whitepaper": "Whitepaper",
       "ecossistema": "Ecossistema"
     }

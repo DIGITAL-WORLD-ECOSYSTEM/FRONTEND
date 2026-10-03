@@ -136,7 +136,7 @@ export function HomeHero({ sx, ...other }: BoxProps) {
         {/* 🟢 Botão Principal: Estilo Crystal (Fundo Deep + Borda Reativa Ciano) */}
         <Button
           component={RouterLink}
-          href={paths.whitepaper}
+          href={paths.documentos}
           size="large"
           startIcon={<Iconify width={24} icon="solar:file-bold-duotone" />}
           sx={{
@@ -176,7 +176,7 @@ export function HomeHero({ sx, ...other }: BoxProps) {
             },
           }}
         >
-          {t('hero.buttons.whitepaper')}
+          {t('hero.buttons.documentos', 'Documentos')}
         </Button>
       </Box>
 

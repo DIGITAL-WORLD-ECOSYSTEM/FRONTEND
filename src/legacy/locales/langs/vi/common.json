@@ -15,6 +15,7 @@
     "description": "Cầu nối tối thượng giữa thế giới vật lý và kỹ thuật số. Cơ sở hạ tầng dựa trên blockchain kết nối RWA với DeFi bằng AI trên một mạng lưới phi tập trung không biên giới.",
     "buttons": {
       "_comment": "Các nút kêu gọi hành động (CTA) chính ở đầu trang.",
+      "documentos": "Tài liệu",
       "whitepaper": "Sách trắng",
       "ecossistema": "Hệ sinh thái"
     }
