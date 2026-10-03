@@ -21,6 +21,7 @@ export const paths = {
   contact: '/contact-us',
   team: '/team',
   whitepaper: '/whitepaper',
+  documentos: '/documentos',
   ecosystem: '/ecosystem',
   privacy: '/privacy',
   terms: '/terms',
