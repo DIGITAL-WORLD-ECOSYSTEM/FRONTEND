@@ -21,6 +21,9 @@
 
 > **Este repositório foi otimizado para atuar como o portal público da ASPPIBRA DAO. Toda a complexidade administrativa, gestão de Smart Contracts e Governança foi delegada ao [App Dashboard](https://app.asppibra.com).**
 
+### 2. 📄 Portal de Documentos Oficiais (/documentos)
+Central unificada para acesso, conferência e assinatura de estatutos sociais, contratos de cessão de posse, whitepapers técnicos e políticas de governança ABNT.
+
 ### 1. 📰 Portal de Notícias (Blog Engine)
 Sistema de alto desempenho para entrega de conteúdo editorial:
 *   **Arquitetura Diamante:** Estrutura modular escalável com separação estrita de camadas.
