@@ -17,8 +17,7 @@ import { SceneController } from './scene-controller';
 const RADIUS = 0.9;
 
 /**
- * Fase inicial da cena
- * isolada para melhorar organização
+ * Fase inicial da cena (Flor da Vida / Gênese)
  */
 const InitialPhase = memo(function InitialPhase({
   scrollProgress,
@@ -29,7 +28,7 @@ const InitialPhase = memo(function InitialPhase({
   scrollProgress: React.MutableRefObject<number>;
   sharedSphereGeo: THREE.SphereGeometry;
   sharedGlassGeo: THREE.SphereGeometry;
-  glassMat: THREE.MeshPhysicalMaterial;
+  glassMat: THREE.Material;
 }) {
   return (
     <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.4}>
@@ -51,24 +50,23 @@ export const HomeBackground: React.FC = memo(() => {
   const scrollProgress = useRef<number>(0);
 
   /**
-   * Geometrias compartilhadas
+   * Geometrias compartilhadas otimizadas
    */
-  const sharedSphereGeo = useMemo(() => new THREE.SphereGeometry(RADIUS, 32, 32), []);
-
-  const sharedGlassGeo = useMemo(() => new THREE.SphereGeometry(RADIUS, 24, 24), []);
+  const sharedSphereGeo = useMemo(() => new THREE.SphereGeometry(RADIUS, 24, 24), []);
+  const sharedGlassGeo = useMemo(() => new THREE.SphereGeometry(RADIUS, 16, 16), []);
 
   /**
-   * Material físico de vidro
+   * Material de vidro translúcido de alta performance
+   * (Substitui MeshPhysicalMaterial com transmission por material direto sem render-pass secundário)
    */
   const glassMat = useMemo(
     () =>
-      new THREE.MeshPhysicalMaterial({
-        transmission: 0.9,
-        roughness: 0.08,
-        thickness: 0.4,
-        ior: 1.15,
+      new THREE.MeshStandardMaterial({
+        roughness: 0.1,
+        metalness: 0.15,
         transparent: true,
-        opacity: 0.25,
+        opacity: 0.22,
+        blending: THREE.AdditiveBlending,
         depthWrite: false,
       }),
     []
@@ -87,11 +85,11 @@ export const HomeBackground: React.FC = memo(() => {
   );
 
   /**
-   * DPR dinâmico
+   * DPR dinâmico com teto de 1.5x para máxima fluidez em telas Retina / alta densidade
    */
   const dpr = useMemo(() => {
     if (typeof window === 'undefined') return 1;
-    return Math.min(window.devicePixelRatio, 2);
+    return Math.min(window.devicePixelRatio, 1.5);
   }, []);
 
   return (
@@ -99,14 +97,14 @@ export const HomeBackground: React.FC = memo(() => {
       <Canvas
         dpr={dpr}
         gl={{
-          antialias: true,
+          antialias: false, // Partículas com textura radial já possuem antialiasing suave natural
           alpha: true,
           powerPreference: 'high-performance',
           stencil: false,
-          depth: true,
+          depth: false,
         }}
       >
-        {/* Monitor de performance */}
+        {/* Monitor de performance ativo */}
         <PerformanceMonitor />
 
         {/* Câmera principal */}
@@ -118,10 +116,10 @@ export const HomeBackground: React.FC = memo(() => {
           {/* Controle de scroll da cena */}
           <SceneController scrollProgress={scrollProgress} />
 
-          {/* Núcleo galáctico (e Evolução Estelar nativa) */}
+          {/* Núcleo galáctico ultra-otimizado (100% GPU) */}
           <GalacticCore scrollProgress={scrollProgress} />
 
-          {/* Fase inicial */}
+          {/* Fase inicial: Flor da Vida */}
           <InitialPhase
             scrollProgress={scrollProgress}
             sharedSphereGeo={sharedSphereGeo}

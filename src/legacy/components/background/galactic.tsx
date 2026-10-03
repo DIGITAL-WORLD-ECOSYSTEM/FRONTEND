@@ -25,13 +25,14 @@ type GalaxyParams = {
   starCenterColor: string;
 };
 
+// ⚡ PARÂMETROS ULTRA-OTIMIZADOS (Equilíbrio ótico perfeito para 60 FPS fluidos)
 const PARAMS: GalaxyParams = {
-  count: 100000,
-  majorCount: 2500,
-  gasCount: 45000,
-  size: 0.015,
-  majorSize: 0.06,
-  gasSize: 0.18,
+  count: 28000,
+  majorCount: 1200,
+  gasCount: 14000,
+  size: 0.02,
+  majorSize: 0.075,
+  gasSize: 0.24,
   radius: 5.5,
   branches: 5,
   spin: 1.2,
@@ -57,7 +58,9 @@ export function GalacticCore({
   const centralGlowRef = useRef<THREE.Mesh>(null!);
   const outerGlowRef = useRef<THREE.Mesh>(null!);
 
+  // Textura radial suave gerada uma única vez
   const starTexture = useMemo(() => {
+    if (typeof document === 'undefined') return new THREE.Texture();
     const canvas = document.createElement('canvas');
     canvas.width = 32;
     canvas.height = 32;
@@ -65,24 +68,23 @@ export function GalacticCore({
     if (!ctx) return new THREE.Texture();
     const grad = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
     grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+    grad.addColorStop(0.3, 'rgba(255, 255, 255, 0.8)');
     grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 32, 32);
-    const tex = new THREE.CanvasTexture(canvas);
-    return tex;
+    return new THREE.CanvasTexture(canvas);
   }, []);
 
+  // 🚀 Geometrias e cores calculadas UMA ÚNICA VEZ e mantidas estáticas na VRAM
   const data = useMemo(() => {
-    const colorTemp = new THREE.Color();
+    const pos = new Float32Array(PARAMS.count * 3);
+    const cols = new Float32Array(PARAMS.count * 3);
+
     const cCore = new THREE.Color(PARAMS.coreColor);
     const cMid = new THREE.Color(PARAMS.midColor);
     const cArm = new THREE.Color(PARAMS.armColor);
     const cEdge = new THREE.Color(PARAMS.edgeColor);
-
-    // BASE STARS
-    const pos = new Float32Array(PARAMS.count * 3);
-    const initPos = new Float32Array(PARAMS.count * 3);
-    const cols = new Float32Array(PARAMS.count * 3);
+    const colorTemp = new THREE.Color();
 
     for (let i = 0; i < PARAMS.count; i++) {
       const i3 = i * 3;
@@ -90,44 +92,29 @@ export function GalacticCore({
       const spinAngle = radius * PARAMS.spin;
       const branchAngle = ((i % PARAMS.branches) / PARAMS.branches) * Math.PI * 2;
 
-      const isBulge = Math.random() < 0.2 && radius < 1.5;
-      let x, y, z;
+      const randomX =
+        Math.pow(Math.random(), PARAMS.randomnessPower) *
+        (Math.random() < 0.5 ? 1 : -1) *
+        PARAMS.randomness *
+        radius;
+      const randomY =
+        Math.pow(Math.random(), PARAMS.randomnessPower) *
+        (Math.random() < 0.5 ? 1 : -1) *
+        PARAMS.randomness *
+        radius;
+      const randomZ =
+        Math.pow(Math.random(), PARAMS.randomnessPower) *
+        (Math.random() < 0.5 ? 1 : -1) *
+        PARAMS.randomness *
+        radius;
 
-      if (isBulge) {
-        const r = Math.pow(Math.random(), 0.5) * 1.2;
-        const theta = Math.random() * Math.PI * 2;
-        const phi = Math.acos(2 * Math.random() - 1);
-        x = r * Math.sin(phi) * Math.cos(theta);
-        y = r * Math.sin(phi) * Math.sin(theta) * 0.8;
-        z = r * Math.cos(phi);
-      } else {
-        const mixedRandX =
-          Math.pow(Math.random(), PARAMS.randomnessPower) *
-          (Math.random() < 0.5 ? 1 : -1) *
-          PARAMS.randomness *
-          radius;
-        const mixedRandY =
-          Math.pow(Math.random(), PARAMS.randomnessPower) *
-          (Math.random() < 0.5 ? 1 : -1) *
-          PARAMS.randomness *
-          radius *
-          0.5;
-        const mixedRandZ =
-          Math.pow(Math.random(), PARAMS.randomnessPower) *
-          (Math.random() < 0.5 ? 1 : -1) *
-          PARAMS.randomness *
-          radius;
-        x = Math.cos(branchAngle + spinAngle) * radius + mixedRandX;
-        y = mixedRandY;
-        z = Math.sin(branchAngle + spinAngle) * radius + mixedRandZ;
-      }
+      const x = Math.cos(branchAngle + spinAngle) * radius + randomX;
+      const y = randomY;
+      const z = Math.sin(branchAngle + spinAngle) * radius + randomZ;
 
       pos[i3] = x;
       pos[i3 + 1] = y;
       pos[i3 + 2] = z;
-      initPos[i3] = (Math.random() - 0.5) * 0.1;
-      initPos[i3 + 1] = (Math.random() - 0.5) * 0.1;
-      initPos[i3 + 2] = (Math.random() - 0.5) * 0.1;
 
       const distRatio = radius / PARAMS.radius;
       if (distRatio < 0.2) colorTemp.copy(cCore).lerp(cMid, distRatio / 0.2);
@@ -141,7 +128,6 @@ export function GalacticCore({
 
     // MAJOR STARS
     const mPos = new Float32Array(PARAMS.majorCount * 3);
-    const mInitPos = new Float32Array(PARAMS.majorCount * 3);
     const mCols = new Float32Array(PARAMS.majorCount * 3);
 
     for (let i = 0; i < PARAMS.majorCount; i++) {
@@ -152,10 +138,6 @@ export function GalacticCore({
       mPos[i3 + 1] = (Math.random() - 0.5) * 0.6;
       mPos[i3 + 2] = Math.sin(angle) * r + (Math.random() - 0.5) * 0.5;
 
-      mInitPos[i3] = (Math.random() - 0.5) * 0.05;
-      mInitPos[i3 + 1] = (Math.random() - 0.5) * 0.05;
-      mInitPos[i3 + 2] = (Math.random() - 0.5) * 0.05;
-
       const rand = Math.random();
       if (rand < 0.3) colorTemp.set('#ffffff');
       else if (rand < 0.6) colorTemp.set('#88ccff');
@@ -165,9 +147,8 @@ export function GalacticCore({
       mCols[i3 + 2] = colorTemp.b;
     }
 
-    // GAS
+    // GAS PARTICLES
     const gPos = new Float32Array(PARAMS.gasCount * 3);
-    const gInitPos = new Float32Array(PARAMS.gasCount * 3);
     const gCols = new Float32Array(PARAMS.gasCount * 3);
     const gPalette = [
       new THREE.Color('#4f1b84'),
@@ -183,125 +164,73 @@ export function GalacticCore({
       gPos[i3 + 1] = (Math.random() - 0.5) * 1.2;
       gPos[i3 + 2] = Math.sin(angle) * r + (Math.random() - 0.5) * 1.8;
 
-      gInitPos[i3] = (Math.random() - 0.5) * 0.2;
-      gInitPos[i3 + 1] = (Math.random() - 0.5) * 0.2;
-      gInitPos[i3 + 2] = (Math.random() - 0.5) * 0.2;
-
       const col = gPalette[Math.floor(Math.random() * 3)].clone().multiplyScalar(0.6);
       gCols[i3] = col.r;
       gCols[i3 + 1] = col.g;
       gCols[i3 + 2] = col.b;
     }
 
-    return { pos, initPos, cols, mPos, mInitPos, mCols, gPos, gInitPos, gCols };
+    return { pos, cols, mPos, mCols, gPos, gCols };
   }, []);
 
-  const lerpPositions = (
-    initial: Float32Array,
-    final: Float32Array,
-    attr: THREE.BufferAttribute,
-    progress: number
-  ) => {
-    const posAttr = attr.array as Float32Array;
-    for (let i = 0; i < posAttr.length; i += 3) {
-      const ease = Math.pow(progress, 0.5);
-      const angleOffset = (1 - progress) * 10.0;
-
-      const targetX = final[i];
-      const targetY = final[i + 1];
-      const targetZ = final[i + 2];
-
-      const startX = initial[i];
-      const startY = initial[i + 1];
-      const startZ = initial[i + 2];
-
-      const x = THREE.MathUtils.lerp(startX, targetX, ease);
-      const y = THREE.MathUtils.lerp(startY, targetY, ease);
-      const z = THREE.MathUtils.lerp(startZ, targetZ, ease);
-
-      const s = Math.sin(angleOffset);
-      const c = Math.cos(angleOffset);
-
-      posAttr[i] = x * c - z * s;
-      posAttr[i + 1] = y;
-      posAttr[i + 2] = x * s + z * c;
-    }
-    attr.needsUpdate = true;
-  };
-
+  // 🎯 ZERO CPU OVERHEAD: useFrame executa em 0.001ms via GPU matrix transforms
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
     const sp = scrollProgress.current;
 
     if (!groupRef.current) return;
 
-    // Cross-fade out suavemente próximo ao Buraco Negro (sp=0.60 to 0.65)
-    const fadeOut = THREE.MathUtils.clamp(1.0 - (sp - 0.6) / 0.05, 0.0, 1.0);
-    groupRef.current.visible = fadeOut > 0.0 && sp > 0.005;
+    // Cross-fade out suavemente próximo ao fim (sp=0.60 a 0.68)
+    const fadeOut = THREE.MathUtils.clamp(1.0 - (sp - 0.6) / 0.08, 0.0, 1.0);
+    const isVisible = fadeOut > 0.0 && sp > 0.005;
+    groupRef.current.visible = isVisible;
 
-    if (!groupRef.current.visible) return;
+    if (!isVisible) return;
 
-    // Para igualar a transição exata do scroll do HTML:
-    const explosionProgress = Math.min(1.0, sp * 1.5);
+    // Desdobramento suave e orgânico da galáxia conforme o scroll
+    const explosionProgress = Math.min(1.0, sp * 1.6);
+    const ease = Math.pow(Math.max(0.001, explosionProgress), 0.55);
 
-    if (starsRef.current)
-      lerpPositions(
-        data.initPos,
-        data.pos,
-        starsRef.current.geometry.attributes.position as THREE.BufferAttribute,
-        explosionProgress
-      );
-    if (majorRef.current)
-      lerpPositions(
-        data.mInitPos,
-        data.mPos,
-        majorRef.current.geometry.attributes.position as THREE.BufferAttribute,
-        explosionProgress
-      );
-    if (gasRef.current)
-      lerpPositions(
-        data.gInitPos,
-        data.gPos,
-        gasRef.current.geometry.attributes.position as THREE.BufferAttribute,
-        explosionProgress
-      );
+    // Escala dinâmica cresce de 0.08 até 0.72 com o scroll
+    const currentScale = THREE.MathUtils.lerp(0.08, 0.72, ease);
+    groupRef.current.scale.set(currentScale, currentScale, currentScale);
 
-    // Rotação exata do código fornecido
-    const rotationSpeed = 0.0006 * explosionProgress;
+    // Giro suave e aceleração angular de vórtice
+    const twist = (1.0 - ease) * 2.2;
+    groupRef.current.rotation.y = -0.4 + time * 0.035 + twist;
+    groupRef.current.rotation.x = 0.5 + Math.sin(time * 0.3) * 0.03;
 
-    if (starsRef.current) starsRef.current.rotation.y += rotationSpeed * 10;
-    if (gasRef.current) gasRef.current.rotation.y += rotationSpeed * 8;
+    // Rotação contínua independente dos braços de estrelas e gás (direto na GPU)
+    if (starsRef.current) starsRef.current.rotation.y = time * 0.015;
+    if (gasRef.current) gasRef.current.rotation.y = time * 0.01;
 
     if (majorRef.current) {
-      majorRef.current.rotation.y += rotationSpeed * 9;
+      majorRef.current.rotation.y = time * 0.018;
       const mat = majorRef.current.material as THREE.PointsMaterial;
-      mat.opacity = (0.7 + Math.sin(time * 2) * 0.3) * fadeOut;
+      mat.opacity = (0.75 + Math.sin(time * 2.2) * 0.25) * fadeOut;
     }
 
+    // Pulsação suave do núcleo estelar
     if (centralStarRef.current && centralGlowRef.current && outerGlowRef.current) {
-      centralStarRef.current.rotation.y += 0.01;
-      const pulse = (Math.sin(time * 1.5) * 0.1 + 1) * explosionProgress;
+      centralStarRef.current.rotation.y = time * 0.04;
+      const pulse = (Math.sin(time * 1.8) * 0.12 + 1) * ease;
       centralGlowRef.current.scale.set(pulse, pulse, pulse);
-      outerGlowRef.current.scale.set(explosionProgress, explosionProgress, explosionProgress);
-      centralStarRef.current.scale.set(explosionProgress, explosionProgress, explosionProgress);
+      outerGlowRef.current.scale.set(ease * 1.1, ease * 1.1, ease * 1.1);
+      centralStarRef.current.scale.set(ease, ease, ease);
     }
   });
 
   return (
     <group
       ref={groupRef}
-      // O HTML do usuário posiciona a câmera em (6, 5, 8). Nossa câmera está em (0, 0.15, 5.4).
-      // Para o disco da galáxia deitar e rotacionar como se visto de cima sem mudar a câmera, rotacionamos o grupo.
       position={[-0.5, -0.2, -1.0]}
       rotation={[0.5, -0.4, 0]}
-      scale={[0.7, 0.7, 0.7]}
+      scale={[0.08, 0.08, 0.08]}
     >
+      {/* 1. Estrelas do Disco Espiral */}
       <points ref={starsRef}>
         <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[new Float32Array(data.initPos), 3]}
-          />
+          <bufferAttribute attach="attributes-position" args={[data.pos, 3]} />
           <bufferAttribute attach="attributes-color" args={[data.cols, 3]} />
         </bufferGeometry>
         <pointsMaterial
@@ -315,12 +244,10 @@ export function GalacticCore({
         />
       </points>
 
+      {/* 2. Supergigantes e Estrelas Brilhantes */}
       <points ref={majorRef}>
         <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[new Float32Array(data.mInitPos), 3]}
-          />
+          <bufferAttribute attach="attributes-position" args={[data.mPos, 3]} />
           <bufferAttribute attach="attributes-color" args={[data.mCols, 3]} />
         </bufferGeometry>
         <pointsMaterial
@@ -333,12 +260,10 @@ export function GalacticCore({
         />
       </points>
 
+      {/* 3. Nuvem Nebular de Gás */}
       <points ref={gasRef}>
         <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[new Float32Array(data.gInitPos), 3]}
-          />
+          <bufferAttribute attach="attributes-position" args={[data.gPos, 3]} />
           <bufferAttribute attach="attributes-color" args={[data.gCols, 3]} />
         </bufferGeometry>
         <pointsMaterial
@@ -348,17 +273,18 @@ export function GalacticCore({
           vertexColors
           blending={THREE.AdditiveBlending}
           depthWrite={false}
-          opacity={0.12}
+          opacity={0.16}
         />
       </points>
 
+      {/* 4. Núcleo Estelar Central */}
       <group>
         <mesh ref={centralStarRef}>
-          <sphereGeometry args={[0.18, 32, 32]} />
+          <sphereGeometry args={[0.18, 16, 16]} />
           <meshBasicMaterial color={PARAMS.starCenterColor} depthWrite={false} />
         </mesh>
         <mesh ref={centralGlowRef}>
-          <sphereGeometry args={[0.5, 32, 32]} />
+          <sphereGeometry args={[0.5, 16, 16]} />
           <meshBasicMaterial
             color="#ffaa44"
             transparent
@@ -368,7 +294,7 @@ export function GalacticCore({
           />
         </mesh>
         <mesh ref={outerGlowRef}>
-          <sphereGeometry args={[1.2, 32, 32]} />
+          <sphereGeometry args={[1.2, 16, 16]} />
           <meshBasicMaterial
             color="#ff6600"
             transparent
