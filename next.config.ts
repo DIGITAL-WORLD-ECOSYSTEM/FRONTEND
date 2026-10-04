@@ -134,6 +134,11 @@ const nextConfig: NextConfig = {
         destination: '/contact',
         permanent: true,
       },
+      {
+        source: '/estatuto',
+        destination: '/documentos/estatuto-social',
+        permanent: true,
+      },
     ];
   },
 
