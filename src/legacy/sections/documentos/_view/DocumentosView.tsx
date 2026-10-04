@@ -1,15 +1,11 @@
 'use client';
 
-import { useState, useMemo } from 'react';
 import type { IDocumentConfig } from 'src/_mock/_documents';
 
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import InputAdornment from '@mui/material/InputAdornment';
 import { alpha, useTheme } from '@mui/material/styles';
 
 import { useRouter } from 'src/routes/hooks';
@@ -24,24 +20,6 @@ import { DOCUMENTS, DOCUMENT_CATEGORIES } from 'src/_mock/_documents';
 export function DocumentosView() {
   const theme = useTheme();
   const router = useRouter();
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-
-  // Filtragem combinada por busca e categoria
-  const filteredDocuments = useMemo(() => {
-    return DOCUMENTS.filter((doc) => {
-      const matchesSearch =
-        doc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        doc.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (doc.code && doc.code.toLowerCase().includes(searchQuery.toLowerCase()));
-
-      const matchesCategory =
-        selectedCategory === 'all' || doc.category === selectedCategory;
-
-      return matchesSearch && matchesCategory;
-    });
-  }, [searchQuery, selectedCategory]);
 
   const handleDocumentAction = (doc: IDocumentConfig) => {
     if (doc.isReady && doc.readyUrl) {
@@ -62,289 +40,105 @@ export function DocumentosView() {
         sx={{
           position: 'relative',
           zIndex: 1,
-          pt: { xs: 12, md: 16 },
+          pt: { xs: 14, md: 18 },
           pb: { xs: 12, md: 16 },
         }}
       >
         <Container maxWidth="lg">
-          {/* 🌟 Cabeçalho Principal */}
-          <Stack spacing={2.5} sx={{ mb: { xs: 6, md: 8 }, textAlign: 'center' }}>
-            <Box sx={{ display: 'inline-flex', justifyContent: 'center' }}>
-              <Chip
-                icon={<Iconify icon={"solar:diploma-verified-bold" as any} width={18} sx={{ color: '#00ff7f !important' }} />}
-                label="CONFORMIDADE JURÍDICA & GOVERNANÇA ABNT"
-                sx={{
-                  bgcolor: 'rgba(0, 255, 127, 0.08)',
-                  color: '#00ff7f',
-                  border: '1px solid rgba(0, 255, 127, 0.25)',
-                  fontFamily: 'var(--font-orbitron), "Orbitron", sans-serif',
-                  fontWeight: 700,
-                  fontSize: '0.75rem',
-                  letterSpacing: 1.5,
-                  py: 0.5,
-                  px: 1,
-                }}
-              />
-            </Box>
-
-            <Typography
-              variant="h2"
-              sx={{
-                fontFamily: 'var(--font-orbitron), "Orbitron", sans-serif',
-                fontWeight: 900,
-                textTransform: 'uppercase',
-                letterSpacing: 1.5,
-                background: 'linear-gradient(90deg, #ffffff 0%, #00ff7f 50%, #00d2ff 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                textShadow: '0 4px 30px rgba(0, 255, 127, 0.2)',
-                fontSize: { xs: '2rem', sm: '2.6rem', md: '3.2rem' },
-              }}
-            >
-              Portal de Documentos
-            </Typography>
-
-            <Typography
-              sx={{
-                color: 'rgba(255,255,255,0.65)',
-                maxWidth: 760,
-                mx: 'auto',
-                fontSize: { xs: 15, md: 17 },
-                lineHeight: 1.7,
-              }}
-            >
-              Acesso centralizado e auditável a todos os instrumentos jurídicos, estatutos sociais,
-              contratos de cessão de posse, políticas de governança e laudos técnicos da <strong>ASPPIBRA-DAO</strong>.
-            </Typography>
-          </Stack>
-
-          {/* 🔍 Barra de Busca e Filtros Rápidos */}
-          <Stack spacing={3} sx={{ mb: { xs: 5, md: 7 } }}>
-            <TextField
-              fullWidth
-              placeholder="Buscar documento por título, código oficial (ex: CONTR-POSSE-17) ou assunto..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Iconify icon={"solar:magnifer-linear" as any} width={22} sx={{ color: '#00ff7f' }} />
-                    </InputAdornment>
-                  ),
-                  sx: {
-                    height: 56,
-                    borderRadius: 2,
-                    bgcolor: 'rgba(2, 8, 23, 0.85)',
-                    backdropFilter: 'blur(16px)',
-                    color: '#fff',
-                    fontSize: '0.95rem',
-                    fontFamily: '"Public Sans", sans-serif',
-                    '& fieldset': {
-                      borderColor: 'rgba(255, 255, 255, 0.1)',
-                      transition: 'border-color 0.3s ease',
-                    },
-                    '&:hover fieldset': {
-                      borderColor: 'rgba(0, 255, 127, 0.4) !important',
-                    },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#00ff7f !important',
-                      boxShadow: '0 0 20px rgba(0, 255, 127, 0.25)',
-                    },
-                  },
-                },
-              }}
-            />
-
-            {/* Abas / Pílulas de Categoria */}
+          {/* 📘 1º Card em Destaque — Whitepaper Oficial */}
+          <CyberCard
+            sx={{
+              p: { xs: 3, md: 4.5 },
+              mb: { xs: 6, md: 8 },
+              display: 'flex',
+              flexDirection: { xs: 'column', md: 'row' },
+              alignItems: { xs: 'flex-start', md: 'center' },
+              gap: 3.5,
+            }}
+          >
+            {/* Ícone Estilizado */}
             <Box
               sx={{
+                width: { xs: 60, md: 76 },
+                height: { xs: 60, md: 76 },
+                borderRadius: 2,
                 display: 'flex',
-                gap: 1.5,
-                overflowX: 'auto',
-                pb: 1,
-                scrollbarWidth: 'none',
-                '&::-webkit-scrollbar': { display: 'none' },
+                alignItems: 'center',
+                justifyContent: 'center',
+                bgcolor: 'rgba(0, 255, 127, 0.12)',
+                color: '#00ff7f',
+                border: '1px solid rgba(0, 255, 127, 0.3)',
+                boxShadow: '0 0 30px rgba(0, 255, 127, 0.2)',
+                flexShrink: 0,
               }}
             >
-              <Chip
-                label={`Todos (${DOCUMENTS.length})`}
-                onClick={() => setSelectedCategory('all')}
-                clickable
-                sx={{
-                  fontFamily: 'var(--font-orbitron), "Orbitron", sans-serif',
-                  fontWeight: 700,
-                  fontSize: '0.8rem',
-                  letterSpacing: 0.5,
-                  height: 38,
-                  px: 1.5,
-                  borderRadius: 1.5,
-                  bgcolor:
-                    selectedCategory === 'all'
-                      ? '#00ff7f'
-                      : 'rgba(255, 255, 255, 0.04)',
-                  color: selectedCategory === 'all' ? '#000' : 'rgba(255, 255, 255, 0.7)',
-                  border: '1px solid',
-                  borderColor:
-                    selectedCategory === 'all'
-                      ? '#00ff7f'
-                      : 'rgba(255, 255, 255, 0.08)',
-                  transition: 'all 0.25s ease',
-                  '&:hover': {
-                    bgcolor:
-                      selectedCategory === 'all'
-                        ? '#00ff7f'
-                        : 'rgba(255, 255, 255, 0.08)',
-                    borderColor: '#00ff7f',
-                  },
-                }}
-              />
-
-              {DOCUMENT_CATEGORIES.map((cat) => {
-                const count = DOCUMENTS.filter((d) => d.category === cat.id).length;
-                const isSelected = selectedCategory === cat.id;
-
-                return (
-                  <Chip
-                    key={cat.id}
-                    icon={<Iconify icon={cat.icon as any} width={18} sx={{ color: isSelected ? '#000 !important' : `${theme.palette[cat.color].main} !important` }} />}
-                    label={`${cat.title} (${count})`}
-                    onClick={() => setSelectedCategory(cat.id)}
-                    clickable
-                    sx={{
-                      fontFamily: 'var(--font-orbitron), "Orbitron", sans-serif',
-                      fontWeight: 700,
-                      fontSize: '0.8rem',
-                      letterSpacing: 0.5,
-                      height: 38,
-                      px: 1.5,
-                      borderRadius: 1.5,
-                      bgcolor: isSelected
-                        ? theme.palette[cat.color].main
-                        : 'rgba(255, 255, 255, 0.04)',
-                      color: isSelected ? '#000' : 'rgba(255, 255, 255, 0.7)',
-                      border: '1px solid',
-                      borderColor: isSelected
-                        ? theme.palette[cat.color].main
-                        : 'rgba(255, 255, 255, 0.08)',
-                      transition: 'all 0.25s ease',
-                      '&:hover': {
-                        bgcolor: isSelected
-                          ? theme.palette[cat.color].main
-                          : 'rgba(255, 255, 255, 0.08)',
-                        borderColor: theme.palette[cat.color].main,
-                      },
-                    }}
-                  />
-                );
-              })}
+              <Iconify icon={"solar:star-bold" as any} width={38} />
             </Box>
-          </Stack>
 
-          {/* 📘 Documento em Destaque — Instrumento Particular de Cessão de Posse */}
-          {selectedCategory === 'all' && !searchQuery && (
-            <CyberCard
-              sx={{
-                p: { xs: 3, md: 4.5 },
-                mb: { xs: 6, md: 8 },
-                display: 'flex',
-                flexDirection: { xs: 'column', md: 'row' },
-                alignItems: { xs: 'flex-start', md: 'center' },
-                gap: 3.5,
-              }}
-            >
-              {/* Ícone Estilizado */}
-              <Box
-                sx={{
-                  width: { xs: 60, md: 76 },
-                  height: { xs: 60, md: 76 },
-                  borderRadius: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  bgcolor: 'rgba(0, 255, 127, 0.12)',
-                  color: '#00ff7f',
-                  border: '1px solid rgba(0, 255, 127, 0.3)',
-                  boxShadow: '0 0 30px rgba(0, 255, 127, 0.2)',
-                  flexShrink: 0,
-                }}
-              >
-                <Iconify icon={"solar:diploma-verified-bold" as any} width={38} />
-              </Box>
-
-              {/* Informações Centrais */}
-              <Box sx={{ flexGrow: 1 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
-                  <Typography
-                    variant="overline"
-                    sx={{
-                      color: '#00ff7f',
-                      fontWeight: 800,
-                      letterSpacing: 2,
-                      fontFamily: 'var(--font-orbitron), "Orbitron", sans-serif',
-                    }}
-                  >
-                    ⭐ INSTRUMENTO JURÍDICO EM DESTAQUE
-                  </Typography>
-                  <Chip
-                    size="small"
-                    label="CONTR-POSSE-17"
-                    sx={{
-                      height: 20,
-                      fontSize: 10,
-                      fontWeight: 800,
-                      fontFamily: 'var(--font-orbitron), "Orbitron", sans-serif',
-                      bgcolor: 'rgba(0, 255, 127, 0.15)',
-                      color: '#00ff7f',
-                    }}
-                  />
-                </Box>
-
+            {/* Informações Centrais */}
+            <Box sx={{ flexGrow: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1.2 }}>
                 <Typography
-                  variant="h4"
+                  variant="h3"
                   sx={{
                     color: '#fff',
                     fontFamily: 'var(--font-orbitron), "Orbitron", sans-serif',
                     fontWeight: 900,
+                    letterSpacing: 1.5,
                     textTransform: 'uppercase',
-                    mb: 1.2,
-                    fontSize: { xs: '1.25rem', md: '1.5rem' },
+                    fontSize: { xs: '1.35rem', md: '1.65rem' },
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
                   }}
                 >
-                  Instrumento Particular de Cessão de Direitos Possessórios
+                  <Box component="span" sx={{ color: '#00ff7f' }}>⭐</Box> WHITEPAPER
                 </Typography>
-
-                <Typography
+                <Chip
+                  size="small"
+                  label="2026"
                   sx={{
-                    color: 'rgba(255,255,255,0.65)',
-                    fontSize: '0.95rem',
-                    lineHeight: 1.65,
-                    maxWidth: 720,
+                    height: 22,
+                    fontSize: 11,
+                    fontWeight: 800,
+                    fontFamily: 'var(--font-orbitron), "Orbitron", sans-serif',
+                    bgcolor: 'rgba(0, 255, 127, 0.15)',
+                    color: '#00ff7f',
+                    border: '1px solid rgba(0, 255, 127, 0.3)',
                   }}
-                >
-                  Minuta jurídica completa contendo 17 capítulos detalhados, qualificação das partes,
-                  declarações possessórias, responsabilidades fiscais, compromisso arbitral e assinaturas digitais
-                  auditáveis com carimbo de tempo e hash SHA-256.
-                </Typography>
+                />
               </Box>
 
-              {/* Botão de Ação */}
-              <Box sx={{ flexShrink: 0, width: { xs: '100%', md: 'auto' } }}>
-                <CyberButton
-                  glowColor="primary"
-                  onClick={() => router.push('/documentos/cessao-de-posse')}
-                  endIcon={<Iconify icon={"solar:pen-new-round-bold" as any} />}
-                  sx={{ width: { xs: '100%', md: 220 }, height: 48 }}
-                >
-                  VER CONTRATO
-                </CyberButton>
-              </Box>
-            </CyberCard>
-          )}
+              <Typography
+                sx={{
+                  color: 'rgba(255,255,255,0.7)',
+                  fontSize: '0.95rem',
+                  lineHeight: 1.65,
+                  maxWidth: 720,
+                }}
+              >
+                Tese técnica completa sobre a arquitetura de tokenização de ativos reais, modelo econômico
+                do token, oráculos descentralizados, fracionamento de terras, governança on-chain e
+                infraestrutura para o agronegócio regenerativo.
+              </Typography>
+            </Box>
+
+            {/* Botão de Ação */}
+            <Box sx={{ flexShrink: 0, width: { xs: '100%', md: 'auto' } }}>
+              <CyberButton
+                glowColor="primary"
+                onClick={() => router.push('/whitepaper')}
+                endIcon={<Iconify icon={"solar:eye-bold" as any} />}
+                sx={{ width: { xs: '100%', md: 220 }, height: 48 }}
+              >
+                LER WHITEPAPER
+              </CyberButton>
+            </Box>
+          </CyberCard>
 
           {/* 🗂️ Categorias e Lista de Cards */}
           {DOCUMENT_CATEGORIES.map((cat) => {
-            const categoryDocs = filteredDocuments.filter((d) => d.category === cat.id);
+            const categoryDocs = DOCUMENTS.filter((d) => d.category === cat.id);
             if (categoryDocs.length === 0) return null;
 
             return (
@@ -541,28 +335,6 @@ export function DocumentosView() {
               </Box>
             );
           })}
-
-          {/* Feedback se a busca for vazia */}
-          {filteredDocuments.length === 0 && (
-            <Box
-              sx={{
-                textAlign: 'center',
-                py: 10,
-                px: 3,
-                borderRadius: 3,
-                bgcolor: 'rgba(2, 8, 23, 0.6)',
-                border: '1px dashed rgba(255, 255, 255, 0.1)',
-              }}
-            >
-              <Iconify icon={"solar:document-cross-bold" as any} width={56} sx={{ color: 'text.disabled', mb: 2 }} />
-              <Typography variant="h5" sx={{ color: '#fff', mb: 1, fontWeight: 700 }}>
-                Nenhum documento encontrado
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.5)' }}>
-                Não foram encontrados documentos correspondentes ao termo &quot;{searchQuery}&quot;.
-              </Typography>
-            </Box>
-          )}
         </Container>
       </Box>
     </>

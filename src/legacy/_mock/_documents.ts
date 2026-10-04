@@ -1,9 +1,7 @@
 export type DocumentCategoryType =
   | 'institucional'
-  | 'rwa'
   | 'governanca'
-  | 'juridico'
-  | 'parcerias';
+  | 'juridico';
 
 export interface IDocumentCategory {
   id: DocumentCategoryType;
@@ -29,21 +27,14 @@ export interface IDocumentConfig {
 export const DOCUMENT_CATEGORIES: IDocumentCategory[] = [
   {
     id: 'institucional',
-    title: 'Institucional & Estatuto',
+    title: 'Institucional',
     icon: 'solar:buildings-3-bold',
     color: 'primary',
-    description: 'Atos constitutivos, estatuto social, regimento interno e manifestos magnos da ASPPIBRA.',
-  },
-  {
-    id: 'rwa',
-    title: 'RWA & Imobiliário / Posse',
-    icon: 'solar:leaf-bold',
-    color: 'success',
-    description: 'Instrumentos contratuais de posse, laudos agronômicos e diretrizes de tokenização de terras.',
+    description: 'Atos constitutivos, estatuto social, regimento interno e governança da ASPPIBRA.',
   },
   {
     id: 'governanca',
-    title: 'Governança Web3 & Tesouro',
+    title: 'Governança',
     icon: 'solar:shield-check-bold',
     color: 'info',
     description: 'Protocolos de votação on-chain (PIP), quórum, custódia do tesouro e auditorias de smart contracts.',
@@ -55,116 +46,38 @@ export const DOCUMENT_CATEGORIES: IDocumentCategory[] = [
     color: 'warning',
     description: 'Termos de uso, políticas de proteção de dados, arbitragem e conformidade regulatória.',
   },
-  {
-    id: 'parcerias',
-    title: 'Produtores & Adesão',
-    icon: 'solar:handshake-bold',
-    color: 'secondary',
-    description: 'Termos de filiação de produtores rurais, acordos de integração tecnológica e parcerias.',
-  },
 ];
 
 export const DOCUMENTS: IDocumentConfig[] = [
-  // 🏛️ 1. Institucional & Estatuto
+  // 🏛️ 1. Institucional
   {
-    slug: 'estatuto-social-2025',
-    title: 'Estatuto Social 2025 da ASPPIBRA',
+    slug: 'estatuto-social',
+    title: 'Estatuto Social',
     category: 'institucional',
-    code: 'EST-2025-01',
+    code: 'EST-SOC-01',
     description: 'Estatuto oficial consolidado regulamentando a estrutura jurídica, direitos e deveres dos associados.',
     size: 'Oficial ABNT',
     type: 'pdf',
     icon: 'solar:book-bookmark-bold',
     isReady: true,
-    readyUrl: '/documentos/estatuto-social-2025',
-  },
-  {
-    slug: 'constituicao-plataforma-dao',
-    title: 'Constituição da Plataforma ASPPIBRA-DAO',
-    category: 'institucional',
-    code: 'CONST-DAO-01',
-    description: 'Princípios fundamentais, governança digital distribuída e direitos dos cidadãos no ecossistema Web3.',
-    size: 'Norma Magna',
-    type: 'model',
-    icon: 'solar:shield-minimalistic-bold',
-    isReady: true,
-    readyUrl: '/documentos/constituicao-plataforma-dao',
+    readyUrl: '/documentos/estatuto-social',
   },
   {
     slug: 'regimento-interno',
-    title: 'Regimento Interno e Conselho Deliberativo',
+    title: 'Regimento Interno',
     category: 'institucional',
-    code: 'REG-INT-02',
+    code: 'REG-INT-01',
     description: 'Regulamento das comissões temáticas, funcionamento do conselho diretor e código eleitoral interno.',
     size: 'Em Revisão',
     type: 'model',
     icon: 'solar:document-text-bold',
     isReady: false,
   },
-  {
-    slug: 'whitepaper-rwa-defi',
-    title: 'Whitepaper Oficial ASPPIBRA-DAO (RWA & DeFi)',
-    category: 'institucional',
-    code: 'WP-RWA-2026',
-    description: 'Arquitetura técnica, modelo econômico do token, oráculos, IPFS e tokenização do agronegócio.',
-    size: 'Técnico 42 pág.',
-    type: 'pdf',
-    icon: 'solar:star-bold',
-    isReady: true,
-    readyUrl: '/whitepaper',
-  },
 
-  // 🌾 2. RWA & Imobiliário / Posse
-  {
-    slug: 'cessao-de-posse',
-    title: 'Instrumento Particular de Cessão de Posse',
-    category: 'rwa',
-    code: 'CONTR-POSSE-17',
-    description: 'Minuta jurídica completa em 17 capítulos com qualificação, declaração possessória e assinaturas digitais.',
-    size: '17 Capítulos',
-    type: 'sign',
-    icon: 'solar:diploma-verified-bold',
-    isReady: true,
-    readyUrl: '/documentos/cessao-de-posse',
-  },
-  {
-    slug: 'manual-tokenizacao-rwa',
-    title: 'Manual de Tokenização de Ativos Reais (RWA)',
-    category: 'rwa',
-    code: 'MAN-RWA-01',
-    description: 'Metodologia de conversão de direitos possessórios e safras em frações digitais criptografadas.',
-    size: 'Em Revisão',
-    type: 'model',
-    icon: 'solar:cpu-bolt-bold',
-    isReady: false,
-  },
-  {
-    slug: 'laudo-vistoria-agronomica',
-    title: 'Laudo Técnico de Vistoria e Avaliação Agronômica',
-    category: 'rwa',
-    code: 'LAUD-AGRO-03',
-    description: 'Padrão pericial de vistoria geográfica, CAR, análise de solo, reserva legal e capacidade produtiva.',
-    size: 'Laudo Pericial',
-    type: 'model',
-    icon: 'solar:clipboard-check-bold',
-    isReady: false,
-  },
-  {
-    slug: 'termo-rastreabilidade-safra',
-    title: 'Termo de Origem e Rastreabilidade Agrícola',
-    category: 'rwa',
-    code: 'RASTR-AGRO-01',
-    description: 'Protocolo de certificação agroecológica e registro de procedência sustentável no storage descentralizado.',
-    size: 'Certificado',
-    type: 'model',
-    icon: 'solar:tag-bold',
-    isReady: false,
-  },
-
-  // ⛓️ 3. Governança Web3 & Tesouro
+  // ⛓️ 2. Governança
   {
     slug: 'politica-propostas-pip',
-    title: 'Política de Propostas de Melhoria (PIP)',
+    title: 'Propostas de Melhoria',
     category: 'governanca',
     code: 'PIP-GOV-01',
     description: 'Regras formais de submissão de propostas, período de discussão, quórum mínimo e execução on-chain.',
@@ -186,7 +99,7 @@ export const DOCUMENTS: IDocumentConfig[] = [
   },
   {
     slug: 'seguranca-smart-contracts',
-    title: 'Diretrizes de Auditoria de Smart Contracts',
+    title: 'Auditoria de Smart',
     category: 'governanca',
     code: 'AUDIT-SEC-01',
     description: 'Padrões de segurança para contratos inteligentes BEP-20, cofre de trava de liquidez e verificação estática.',
@@ -196,10 +109,10 @@ export const DOCUMENTS: IDocumentConfig[] = [
     isReady: false,
   },
 
-  // ⚖️ 4. Jurídico, Compliance & LGPD
+  // ⚖️ 3. Jurídico, Compliance & LGPD
   {
     slug: 'privacidade-lgpd',
-    title: 'Política de Privacidade e Proteção de Dados (LGPD)',
+    title: 'Política de Privacidade e Proteção de Dados',
     category: 'juridico',
     code: 'POL-LGPD-01',
     description: 'Conformidade integral com a Lei 13.709/2018 para coleta, tratamento e anonimização de dados pessoais.',
@@ -211,7 +124,7 @@ export const DOCUMENTS: IDocumentConfig[] = [
   },
   {
     slug: 'termos-de-uso',
-    title: 'Termos e Condições Gerais de Uso da Plataforma',
+    title: 'Termos e Condições Gerais',
     category: 'juridico',
     code: 'TER-USO-01',
     description: 'Contrato de adesão do usuário, responsabilidades das carteiras não-custodiais e uso do ecossistema.',
@@ -223,7 +136,7 @@ export const DOCUMENTS: IDocumentConfig[] = [
   },
   {
     slug: 'compromisso-arbitral',
-    title: 'Compromisso Arbitral e Resolução de Conflitos',
+    title: 'Resolução de Conflitos',
     category: 'juridico',
     code: 'ARB-LEG-01',
     description: 'Cláusula compromissória estabelecendo arbitragem extrajudicial especializada para controvérsias contratuais.',
@@ -234,48 +147,13 @@ export const DOCUMENTS: IDocumentConfig[] = [
   },
   {
     slug: 'codigo-de-etica',
-    title: 'Código de Ética, Integridade e Transparência',
+    title: 'Código de Ética',
     category: 'juridico',
     code: 'COD-ETICA-01',
     description: 'Padrões éticos, política anticorrupção e canal confidencial de integridade para a comunidade ASPPIBRA.',
     size: 'Em Revisão',
     type: 'model',
     icon: 'solar:medal-star-bold',
-    isReady: false,
-  },
-
-  // 🤝 5. Produtores & Adesão
-  {
-    slug: 'termo-adesao-produtor',
-    title: 'Termo de Adesão de Produtor Rural Associado',
-    category: 'parcerias',
-    code: 'ADES-PROD-01',
-    description: 'Formulário e termo formal de qualificação do pequeno e médio produtor ao ecossistema da ASPPIBRA.',
-    size: 'Termo de Adesão',
-    type: 'sign',
-    icon: 'solar:user-check-bold',
-    isReady: false,
-  },
-  {
-    slug: 'parceria-tecnologica-apis',
-    title: 'Contrato de Parceria Tecnológica e Integração',
-    category: 'parcerias',
-    code: 'PARC-TEC-01',
-    description: 'Termo de integração com nós de infraestrutura, gateways de pagamento Web3 e oráculos descentralizados.',
-    size: 'Em Revisão',
-    type: 'model',
-    icon: 'solar:link-circle-bold',
-    isReady: false,
-  },
-  {
-    slug: 'termo-voluntariado-agro',
-    title: 'Termo de Voluntariado e Fomento Agroecológico',
-    category: 'parcerias',
-    code: 'VOL-AGRO-01',
-    description: 'Instrumento de adesão ao trabalho voluntário conforme Lei 9.608/1998 para apoio à agricultura regenerativa.',
-    size: 'Voluntariado',
-    type: 'model',
-    icon: 'solar:heart-angle-bold',
     isReady: false,
   },
 ];

@@ -124,6 +124,16 @@ const nextConfig: NextConfig = {
         destination: '/news/:slug*',
         permanent: true,
       },
+      {
+        source: '/about-us',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/contact-us',
+        destination: '/contact',
+        permanent: true,
+      },
     ];
   },
 

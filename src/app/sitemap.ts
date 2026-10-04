@@ -18,19 +18,80 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const { posts } = await getPosts();
 
-  // 1. Rotas Estáticas Principais
+  // 1. Rotas Estáticas Principais (Institucional, Legal e Hubs)
+  const now = new Date().toISOString();
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: `${URL}`,
-      lastModified: new Date().toISOString(),
+      lastModified: now,
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: `${URL}${paths.post.root}`,
-      lastModified: new Date().toISOString(),
+      url: `${URL}${paths.news.root}`,
+      lastModified: now,
       changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${URL}${paths.about}`,
+      lastModified: now,
+      changeFrequency: 'monthly',
       priority: 0.8,
+    },
+    {
+      url: `${URL}${paths.ecosystem}`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${URL}${paths.documentos}`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${URL}${paths.team}`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${URL}${paths.whitepaper}`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${URL}${paths.contact}`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${URL}${paths.faqs}`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${URL}${paths.terms}`,
+      lastModified: now,
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
+      url: `${URL}${paths.privacy}`,
+      lastModified: now,
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
+      url: `${URL}${paths.cookies}`,
+      lastModified: now,
+      changeFrequency: 'yearly',
+      priority: 0.3,
     },
   ];
 

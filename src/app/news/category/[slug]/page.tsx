@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `Categoria: ${categoryName}`,
       description: `Conteúdo focado em ${categoryName} para o produtor rural e governança RWA.`,
-      url: `${CONFIG.siteUrl}/post/category/${slug}`,
+      url: `${CONFIG.siteUrl}/news/category/${slug}`,
     },
   };
 }
