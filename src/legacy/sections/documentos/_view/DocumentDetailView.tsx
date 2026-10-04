@@ -145,6 +145,60 @@ export function DocumentDetailView({ document }: Props) {
             </CyberButton>
           </Box>
 
+          {/* 🏛️ Timbre Institucional Oficial da República Federativa do Brasil / ASPPIBRA (Apenas Impressão A4) */}
+          <Box
+            className="print-only"
+            sx={{
+              display: 'none',
+              '@media print': {
+                display: 'block !important',
+                textAlign: 'center',
+                borderBottom: '1.5pt solid #000000',
+                pb: '10pt',
+                mb: '16pt',
+                breakInside: 'avoid !important',
+              },
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: '13pt !important',
+                fontWeight: '900 !important',
+                textTransform: 'uppercase',
+                color: '#000000 !important',
+                WebkitTextFillColor: '#000000 !important',
+                fontFamily: '"Public Sans", Arial, sans-serif !important',
+                letterSpacing: '1pt',
+                lineHeight: 1.2,
+                mb: '3pt !important',
+              }}
+            >
+              {document.organization}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: '9.5pt !important',
+                fontWeight: '700 !important',
+                color: '#222222 !important',
+                WebkitTextFillColor: '#222222 !important',
+                fontFamily: '"Public Sans", Arial, sans-serif !important',
+                mb: '2pt !important',
+              }}
+            >
+              {document.digitalName} • GOVERNANÇA INSTITUCIONAL & REGISTRO PÚBLICO
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: '8.5pt !important',
+                color: '#444444 !important',
+                WebkitTextFillColor: '#444444 !important',
+                fontFamily: '"Public Sans", Arial, sans-serif !important',
+              }}
+            >
+              Registro Civil de Pessoas Jurídicas (RCPJ) | Sede e Foro: {document.jurisdiction}
+            </Typography>
+          </Box>
+
           {/* 📄 Cabeçalho Oficial do Documento */}
           <CyberCard
             sx={{
@@ -817,12 +871,22 @@ export function DocumentDetailView({ document }: Props) {
                                     },
                                   }}
                                 >
-                                  <strong style={{ color: art.highlight ? '#00ff7f' : '#fff' }}>
-                                    <span style={{ color: '#000' }}>
-                                      {p.number}
-                                      {p.title ? ` – ${p.title}: ` : ': '}
-                                    </span>
-                                  </strong>
+                                  <Box
+                                    component="span"
+                                    sx={{
+                                      fontWeight: 800,
+                                      color: art.highlight ? '#00ff7f' : '#ffffff',
+                                      mr: 0.5,
+                                      '@media print': {
+                                        color: '#000000 !important',
+                                        WebkitTextFillColor: '#000000 !important',
+                                        fontWeight: 'bold !important',
+                                      },
+                                    }}
+                                  >
+                                    {p.number}
+                                    {p.title ? ` – ${p.title}: ` : ': '}
+                                  </Box>
                                   {p.text}
                                 </Typography>
 
@@ -843,7 +907,21 @@ export function DocumentDetailView({ document }: Props) {
                                           },
                                         }}
                                       >
-                                        <strong style={{ color: '#000000' }}>{pItem.label} </strong>
+                                        <Box
+                                          component="span"
+                                          sx={{
+                                            fontWeight: 700,
+                                            color: art.highlight ? '#00ff7f' : 'rgba(255, 255, 255, 0.95)',
+                                            mr: 0.5,
+                                            '@media print': {
+                                              color: '#000000 !important',
+                                              WebkitTextFillColor: '#000000 !important',
+                                              fontWeight: 'bold !important',
+                                            },
+                                          }}
+                                        >
+                                          {pItem.label}{' '}
+                                        </Box>
                                         {pItem.text}
                                       </Typography>
                                     ))}
@@ -875,6 +953,7 @@ export function DocumentDetailView({ document }: Props) {
                     boxShadow: 'none !important',
                     p: '16pt !important',
                     mt: '24pt !important',
+                    mb: '0 !important',
                     breakBefore: 'page !important',
                     pageBreakBefore: 'always !important',
                     breakInside: 'avoid !important',
