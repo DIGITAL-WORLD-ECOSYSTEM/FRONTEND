@@ -67,8 +67,8 @@ export function DocumentDetailView({ document }: Props) {
 
   return (
     <>
-      {/* 🌌 Atmosfera Web3 (oculta na impressão) */}
-      <Box sx={{ '@media print': { display: 'none' } }}>
+      {/* 🌌 Atmosfera Web3 (oculta 100% na impressão) */}
+      <Box className="no-print" sx={{ '@media print': { display: 'none !important' } }}>
         <HomeBackground />
       </Box>
 
@@ -80,16 +80,26 @@ export function DocumentDetailView({ document }: Props) {
           pt: { xs: 12, md: 16 },
           pb: { xs: 12, md: 16 },
           '@media print': {
-            pt: 0,
-            pb: 0,
-            bgcolor: '#fff',
-            color: '#000',
+            pt: '0 !important',
+            pb: '0 !important',
+            bgcolor: '#ffffff !important',
+            color: '#000000 !important',
           },
         }}
       >
-        <Container maxWidth="lg">
+        <Container
+          maxWidth="lg"
+          sx={{
+            '@media print': {
+              maxWidth: '100% !important',
+              p: '0 !important',
+              m: '0 !important',
+            },
+          }}
+        >
           {/* 🧭 Breadcrumbs e Voltar (Oculto no Print) */}
           <Box
+            className="no-print"
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -97,7 +107,7 @@ export function DocumentDetailView({ document }: Props) {
               flexWrap: 'wrap',
               gap: 2,
               mb: 4,
-              '@media print': { display: 'none' },
+              '@media print': { display: 'none !important' },
             }}
           >
             <Breadcrumbs
@@ -144,11 +154,15 @@ export function DocumentDetailView({ document }: Props) {
               position: 'relative',
               overflow: 'hidden',
               '@media print': {
-                border: 'none',
-                boxShadow: 'none',
-                p: 0,
-                mb: 3,
-                bgcolor: 'transparent',
+                border: '2px solid #000 !important',
+                borderRadius: '0 !important',
+                boxShadow: 'none !important',
+                p: '16pt !important',
+                mb: '20pt !important',
+                bgcolor: '#ffffff !important',
+                color: '#000000 !important',
+                breakInside: 'avoid !important',
+                pageBreakInside: 'avoid !important',
               },
             }}
           >
@@ -163,10 +177,17 @@ export function DocumentDetailView({ document }: Props) {
                   fontWeight: 800,
                   fontSize: 11,
                   fontFamily: 'var(--font-orbitron), "Orbitron", sans-serif',
+                  '@media print': {
+                    bgcolor: 'transparent !important',
+                    color: '#000 !important',
+                    border: '1px solid #000 !important',
+                    fontWeight: 'bold !important',
+                    fontFamily: '"Public Sans", Arial, sans-serif !important',
+                  },
                 }}
               />
               <Chip
-                icon={<Iconify icon={"solar:verified-check-bold" as any} width={16} sx={{ color: '#00d2ff !important' }} />}
+                icon={<Iconify icon={"solar:verified-check-bold" as any} width={16} sx={{ color: '#00d2ff !important', '@media print': { display: 'none !important' } }} />}
                 label="OFICIAL CONSOLIDADO"
                 sx={{
                   bgcolor: 'rgba(0, 210, 255, 0.12)',
@@ -174,6 +195,13 @@ export function DocumentDetailView({ document }: Props) {
                   fontWeight: 700,
                   fontSize: 11,
                   fontFamily: 'var(--font-orbitron), "Orbitron", sans-serif',
+                  '@media print': {
+                    bgcolor: 'transparent !important',
+                    color: '#000 !important',
+                    border: '1px solid #000 !important',
+                    fontWeight: 'bold !important',
+                    fontFamily: '"Public Sans", Arial, sans-serif !important',
+                  },
                 }}
               />
               <Chip
@@ -183,7 +211,12 @@ export function DocumentDetailView({ document }: Props) {
                   color: 'rgba(255, 255, 255, 0.8)',
                   fontWeight: 600,
                   fontSize: 11,
-                  '@media print': { color: '#000' },
+                  '@media print': {
+                    bgcolor: 'transparent !important',
+                    color: '#000 !important',
+                    border: '1px solid #000 !important',
+                    fontWeight: 'bold !important',
+                  },
                 }}
               />
             </Stack>
@@ -199,7 +232,15 @@ export function DocumentDetailView({ document }: Props) {
                 color: '#fff',
                 fontSize: { xs: '1.8rem', md: '2.4rem' },
                 mb: 1.5,
-                '@media print': { color: '#000', fontSize: '24pt' },
+                '@media print': {
+                  color: '#000000 !important',
+                  WebkitTextFillColor: '#000000 !important',
+                  fontSize: '22pt !important',
+                  fontFamily: '"Public Sans", Arial, sans-serif !important',
+                  fontWeight: '900 !important',
+                  letterSpacing: '0.5pt !important',
+                  mb: '8pt !important',
+                },
               }}
             >
               {document.title}
@@ -212,7 +253,12 @@ export function DocumentDetailView({ document }: Props) {
                 fontWeight: 500,
                 lineHeight: 1.5,
                 mb: 2,
-                '@media print': { color: '#333' },
+                '@media print': {
+                  color: '#000000 !important',
+                  fontSize: '12pt !important',
+                  fontWeight: 'bold !important',
+                  mb: '6pt !important',
+                },
               }}
             >
               {document.organization} {document.digitalName && `(${document.digitalName})`}
@@ -223,14 +269,19 @@ export function DocumentDetailView({ document }: Props) {
               sx={{
                 color: 'rgba(255,255,255,0.5)',
                 fontSize: 13,
-                '@media print': { color: '#666' },
+                '@media print': {
+                  color: '#333333 !important',
+                  fontSize: '10pt !important',
+                  lineHeight: '1.4 !important',
+                },
               }}
             >
               Foro & Comarca: <strong>{document.jurisdiction}</strong> • Data da Assembleia: <strong>{document.approvalDate}</strong>
             </Typography>
 
-            {/* 🛠️ Barra de Ações (Oculta na impressão) */}
+            {/* 🛠️ Barra de Ações (Oculta 100% na impressão) */}
             <Box
+              className="no-print"
               sx={{
                 display: 'flex',
                 alignItems: 'center',
@@ -239,7 +290,7 @@ export function DocumentDetailView({ document }: Props) {
                 mt: 3.5,
                 pt: 3,
                 borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-                '@media print': { display: 'none' },
+                '@media print': { display: 'none !important' },
               }}
             >
               <CyberButton
@@ -294,15 +345,19 @@ export function DocumentDetailView({ document }: Props) {
                 bgcolor: 'rgba(2, 8, 23, 0.75)',
                 border: '1px solid rgba(0, 210, 255, 0.25)',
                 '@media print': {
-                  bgcolor: '#f5f5f5',
-                  border: '1px solid #ccc',
-                  p: 2,
-                  mb: 3,
+                  bgcolor: '#ffffff !important',
+                  border: '1px solid #000000 !important',
+                  borderRadius: '0 !important',
+                  boxShadow: 'none !important',
+                  p: '12pt !important',
+                  mb: '18pt !important',
+                  breakInside: 'avoid !important',
+                  pageBreakInside: 'avoid !important',
                 },
               }}
             >
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
-                <Iconify icon={"solar:diploma-verified-bold" as any} width={22} sx={{ color: '#00d2ff' }} />
+                <Iconify icon={"solar:diploma-verified-bold" as any} width={22} sx={{ color: '#00d2ff', '@media print': { color: '#000 !important' } }} />
                 <Typography
                   variant="subtitle1"
                   sx={{
@@ -311,7 +366,12 @@ export function DocumentDetailView({ document }: Props) {
                     color: '#fff',
                     letterSpacing: 1,
                     fontSize: '0.9rem',
-                    '@media print': { color: '#000' },
+                    '@media print': {
+                      color: '#000000 !important',
+                      fontFamily: '"Public Sans", Arial, sans-serif !important',
+                      fontSize: '11pt !important',
+                      fontWeight: 'bold !important',
+                    },
                   }}
                 >
                   REGISTRO CARTORÁRIO & CONSULTA DE SELOS EXTRAJUDICIAIS
@@ -323,6 +383,9 @@ export function DocumentDetailView({ document }: Props) {
                   display: 'grid',
                   gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' },
                   gap: 2,
+                  '@media print': {
+                    gap: '8pt !important',
+                  },
                 }}
               >
                 {document.cartorioSeals.map((seal, idx) => (
@@ -333,16 +396,42 @@ export function DocumentDetailView({ document }: Props) {
                       borderRadius: 1.5,
                       bgcolor: 'rgba(255, 255, 255, 0.03)',
                       border: '1px solid rgba(255, 255, 255, 0.06)',
-                      '@media print': { bgcolor: '#fff', border: '1px solid #ddd' },
+                      '@media print': {
+                        bgcolor: '#fafafa !important',
+                        border: '1px solid #999999 !important',
+                        p: '8pt !important',
+                      },
                     }}
                   >
-                    <Typography variant="caption" sx={{ color: '#00ff7f', fontWeight: 700, display: 'block', mb: 0.5 }}>
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: '#00ff7f',
+                        fontWeight: 700,
+                        display: 'block',
+                        mb: 0.5,
+                        '@media print': { color: '#000000 !important', fontWeight: 'bold !important', fontSize: '9pt !important' },
+                      }}
+                    >
                       {seal.label}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#fff', fontSize: '0.85rem', '@media print': { color: '#000' } }}>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: '#fff',
+                        fontSize: '0.85rem',
+                        '@media print': { color: '#000000 !important', fontSize: '9.5pt !important' },
+                      }}
+                    >
                       Selo: <strong>{seal.seal}</strong> • Aleatório: <strong>{seal.randomCode}</strong>
                     </Typography>
-                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)', '@media print': { color: '#555' } }}>
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: 'rgba(255,255,255,0.5)',
+                        '@media print': { color: '#444444 !important', fontSize: '8.5pt !important' },
+                      }}
+                    >
                       Data de Transmissão: {seal.transmissionDate}
                     </Typography>
                   </Box>
@@ -358,10 +447,14 @@ export function DocumentDetailView({ document }: Props) {
               gridTemplateColumns: { xs: '1fr', md: '300px 1fr' },
               gap: { xs: 4, md: 5 },
               alignItems: 'start',
+              '@media print': {
+                display: 'block !important',
+              },
             }}
           >
-            {/* 📑 Sumário Lateral Fixo (Oculto no Print) */}
+            {/* 📑 Sumário Lateral Fixo (Oculto 100% no Print) */}
             <Box
+              className="no-print"
               sx={{
                 position: { md: 'sticky' },
                 top: { md: 100 },
@@ -369,7 +462,7 @@ export function DocumentDetailView({ document }: Props) {
                 overflowY: { md: 'auto' },
                 pr: { md: 1 },
                 scrollbarWidth: 'thin',
-                '@media print': { display: 'none' },
+                '@media print': { display: 'none !important' },
               }}
             >
               <CyberCard sx={{ p: 2.5, bgcolor: 'rgba(2, 8, 23, 0.85)' }}>
@@ -449,10 +542,25 @@ export function DocumentDetailView({ document }: Props) {
                   pb: 5,
                   borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
                   '@media print': {
-                    borderBottom: '1px solid #ccc',
-                    pageBreakInside: 'avoid',
-                    mb: 4,
-                    pb: 3,
+                    borderBottom: 'none !important',
+                    mb: '20pt !important',
+                    pb: '0 !important',
+                    breakInside: 'auto !important',
+                  },
+                },
+                '& .doc-chapter-header': {
+                  '@media print': {
+                    breakAfter: 'avoid !important',
+                    pageBreakAfter: 'avoid !important',
+                    mb: '12pt !important',
+                  },
+                },
+                '& .doc-article': {
+                  '@media print': {
+                    breakInside: 'avoid !important',
+                    pageBreakInside: 'avoid !important',
+                    mb: '12pt !important',
+                    pb: '4pt !important',
                   },
                 },
               }}
@@ -471,9 +579,14 @@ export function DocumentDetailView({ document }: Props) {
                     fontSize: '0.95rem',
                     lineHeight: 1.7,
                     '@media print': {
-                      bgcolor: '#f9f9f9',
-                      color: '#333',
-                      borderLeft: '4px solid #000',
+                      bgcolor: '#f5f5f5 !important',
+                      color: '#000000 !important',
+                      borderLeft: '3px solid #000000 !important',
+                      p: '10pt !important',
+                      mb: '16pt !important',
+                      fontSize: '10.5pt !important',
+                      breakInside: 'avoid !important',
+                      pageBreakInside: 'avoid !important',
                     },
                   }}
                 >
@@ -485,7 +598,7 @@ export function DocumentDetailView({ document }: Props) {
               {document.chapters.map((chap) => (
                 <Box key={chap.id} id={chap.id} className="doc-chapter">
                   {/* Cabeçalho do Capítulo */}
-                  <Box sx={{ mb: 3 }}>
+                  <Box className="doc-chapter-header" sx={{ mb: 3 }}>
                     <Typography
                       variant="overline"
                       sx={{
@@ -495,7 +608,13 @@ export function DocumentDetailView({ document }: Props) {
                         fontFamily: 'var(--font-orbitron), "Orbitron", sans-serif',
                         fontSize: '0.85rem',
                         display: 'block',
-                        '@media print': { color: '#000' },
+                        '@media print': {
+                          color: '#000000 !important',
+                          fontFamily: '"Public Sans", Arial, sans-serif !important',
+                          fontWeight: 'bold !important',
+                          fontSize: '11pt !important',
+                          letterSpacing: '1pt !important',
+                        },
                       }}
                     >
                       CAPÍTULO {chap.romanNumeral}
@@ -510,7 +629,16 @@ export function DocumentDetailView({ document }: Props) {
                         fontSize: { xs: '1.25rem', md: '1.45rem' },
                         mt: 0.5,
                         mb: 1.5,
-                        '@media print': { color: '#000', fontSize: '16pt' },
+                        '@media print': {
+                          color: '#000000 !important',
+                          fontFamily: '"Public Sans", Arial, sans-serif !important',
+                          fontSize: '14pt !important',
+                          fontWeight: '900 !important',
+                          mt: '4pt !important',
+                          mb: '8pt !important',
+                          borderBottom: '1px solid #000 !important',
+                          pb: '4pt !important',
+                        },
                       }}
                     >
                       {chap.title}
@@ -524,7 +652,12 @@ export function DocumentDetailView({ document }: Props) {
                           fontStyle: 'italic',
                           lineHeight: 1.6,
                           fontSize: '0.88rem',
-                          '@media print': { color: '#555' },
+                          '@media print': {
+                            color: '#333333 !important',
+                            fontSize: '9.5pt !important',
+                            lineHeight: '1.4 !important',
+                            mb: '10pt !important',
+                          },
                         }}
                       >
                         {chap.subtitle}
@@ -533,10 +666,11 @@ export function DocumentDetailView({ document }: Props) {
                   </Box>
 
                   {/* Artigos do Capítulo */}
-                  <Stack spacing={3.5}>
+                  <Stack spacing={3.5} sx={{ '@media print': { gap: '10pt !important' } }}>
                     {chap.articles.map((art, artIdx) => (
                       <Box
                         key={artIdx}
+                        className="doc-article"
                         sx={{
                           p: art.highlight ? 3 : 2,
                           borderRadius: 2,
@@ -547,9 +681,10 @@ export function DocumentDetailView({ document }: Props) {
                             ? '1px solid rgba(0, 255, 127, 0.25)'
                             : 'none',
                           '@media print': {
-                            bgcolor: 'transparent',
-                            border: art.highlight ? '1px solid #333' : 'none',
-                            p: 1,
+                            bgcolor: 'transparent !important',
+                            border: art.highlight ? '1px solid #000000 !important' : 'none !important',
+                            p: art.highlight ? '10pt !important' : '0 !important',
+                            borderRadius: '0 !important',
                           },
                         }}
                       >
@@ -563,7 +698,12 @@ export function DocumentDetailView({ document }: Props) {
                               fontWeight: 800,
                               fontSize: '0.95rem',
                               letterSpacing: 0.5,
-                              '@media print': { color: '#000', fontWeight: 'bold' },
+                              '@media print': {
+                                color: '#000000 !important',
+                                fontFamily: '"Public Sans", Arial, sans-serif !important',
+                                fontWeight: '900 !important',
+                                fontSize: '11pt !important',
+                              },
                             }}
                           >
                             {art.number} – {art.title}
@@ -580,30 +720,43 @@ export function DocumentDetailView({ document }: Props) {
                                 bgcolor: 'rgba(0, 255, 127, 0.15)',
                                 color: '#00ff7f',
                                 border: '1px solid rgba(0, 255, 127, 0.3)',
-                                '@media print': { display: 'none' },
+                                '@media print': {
+                                  bgcolor: 'transparent !important',
+                                  color: '#000 !important',
+                                  border: '1px solid #000 !important',
+                                  fontSize: '7pt !important',
+                                  height: '16pt !important',
+                                },
                               }}
                             />
                           )}
                         </Box>
 
-                        {/* Caput */}
-                        <Typography
-                          variant="body1"
-                          sx={{
-                            color: 'rgba(255, 255, 255, 0.88)',
-                            lineHeight: 1.8,
-                            fontSize: '0.95rem',
-                            mb: 1.5,
-                            textAlign: 'justify',
-                            '@media print': { color: '#000' },
-                          }}
-                        >
-                          {art.caput}
-                        </Typography>
+                        {/* Caput (apenas se houver texto) */}
+                        {art.caput && art.caput.trim() !== '' && (
+                          <Typography
+                            variant="body1"
+                            sx={{
+                              color: 'rgba(255, 255, 255, 0.88)',
+                              lineHeight: 1.8,
+                              fontSize: '0.95rem',
+                              mb: 1.5,
+                              textAlign: 'justify',
+                              '@media print': {
+                                color: '#000000 !important',
+                                fontSize: '10pt !important',
+                                lineHeight: '1.55 !important',
+                                mb: '6pt !important',
+                              },
+                            }}
+                          >
+                            {art.caput}
+                          </Typography>
+                        )}
 
                         {/* Itens / Alíneas do Caput */}
                         {art.items && art.items.length > 0 && (
-                          <Stack spacing={1.5} sx={{ pl: { xs: 1.5, md: 3 }, mb: 2 }}>
+                          <Stack spacing={1.5} sx={{ pl: { xs: 1.5, md: 3 }, mb: 2, '@media print': { pl: '12pt !important', gap: '4pt !important', mb: '6pt !important' } }}>
                             {art.items.map((item, itemIdx) => (
                               <Box key={itemIdx}>
                                 {item.label && (
@@ -614,7 +767,11 @@ export function DocumentDetailView({ document }: Props) {
                                       fontWeight: 700,
                                       fontSize: '0.92rem',
                                       mr: 1,
-                                      '@media print': { color: '#000' },
+                                      '@media print': {
+                                        color: '#000000 !important',
+                                        fontWeight: 'bold !important',
+                                        fontSize: '10pt !important',
+                                      },
                                     }}
                                   >
                                     {item.label}
@@ -627,7 +784,11 @@ export function DocumentDetailView({ document }: Props) {
                                     lineHeight: 1.7,
                                     fontSize: '0.92rem',
                                     whiteSpace: 'pre-line',
-                                    '@media print': { color: '#222' },
+                                    '@media print': {
+                                      color: '#000000 !important',
+                                      fontSize: '10pt !important',
+                                      lineHeight: '1.5 !important',
+                                    },
                                   }}
                                 >
                                   {item.text}
@@ -639,7 +800,7 @@ export function DocumentDetailView({ document }: Props) {
 
                         {/* Parágrafos */}
                         {art.paragraphs && art.paragraphs.length > 0 && (
-                          <Stack spacing={2} sx={{ mt: 2, pl: { xs: 1.5, md: 2.5 } }}>
+                          <Stack spacing={2} sx={{ mt: 2, pl: { xs: 1.5, md: 2.5 }, '@media print': { mt: '6pt !important', pl: '8pt !important', gap: '5pt !important' } }}>
                             {art.paragraphs.map((p, pIdx) => (
                               <Box key={pIdx}>
                                 <Typography
@@ -649,18 +810,24 @@ export function DocumentDetailView({ document }: Props) {
                                     lineHeight: 1.75,
                                     fontSize: '0.93rem',
                                     textAlign: 'justify',
-                                    '@media print': { color: '#000' },
+                                    '@media print': {
+                                      color: '#000000 !important',
+                                      fontSize: '10pt !important',
+                                      lineHeight: '1.5 !important',
+                                    },
                                   }}
                                 >
                                   <strong style={{ color: art.highlight ? '#00ff7f' : '#fff' }}>
-                                    {p.number}
-                                    {p.title ? ` – ${p.title}: ` : ': '}
+                                    <span style={{ color: '#000' }}>
+                                      {p.number}
+                                      {p.title ? ` – ${p.title}: ` : ': '}
+                                    </span>
                                   </strong>
                                   {p.text}
                                 </Typography>
 
                                 {p.items && p.items.length > 0 && (
-                                  <Stack spacing={1} sx={{ pl: 2, mt: 1 }}>
+                                  <Stack spacing={1} sx={{ pl: 2, mt: 1, '@media print': { pl: '10pt !important', mt: '3pt !important', gap: '3pt !important' } }}>
                                     {p.items.map((pItem, pItemIdx) => (
                                       <Typography
                                         key={pItemIdx}
@@ -669,10 +836,14 @@ export function DocumentDetailView({ document }: Props) {
                                           color: 'rgba(255, 255, 255, 0.78)',
                                           lineHeight: 1.65,
                                           fontSize: '0.9rem',
-                                          '@media print': { color: '#333' },
+                                          '@media print': {
+                                            color: '#000000 !important',
+                                            fontSize: '9.5pt !important',
+                                            lineHeight: '1.45 !important',
+                                          },
                                         }}
                                       >
-                                        <strong style={{ color: '#00d2ff' }}>{pItem.label} </strong>
+                                        <strong style={{ color: '#000000' }}>{pItem.label} </strong>
                                         {pItem.text}
                                       </Typography>
                                     ))}
@@ -690,6 +861,7 @@ export function DocumentDetailView({ document }: Props) {
 
               {/* ✍️ Bloco Oficial de Encerramento e Assinaturas (Página 33) */}
               <CyberCard
+                className="doc-signatures-block"
                 sx={{
                   p: { xs: 3, md: 5 },
                   mt: 6,
@@ -697,10 +869,16 @@ export function DocumentDetailView({ document }: Props) {
                   border: '1px solid rgba(0, 255, 127, 0.3)',
                   textAlign: 'center',
                   '@media print': {
-                    bgcolor: '#fff',
-                    border: '1px solid #999',
-                    p: 3,
-                    pageBreakInside: 'avoid',
+                    bgcolor: '#ffffff !important',
+                    border: '1.5pt solid #000000 !important',
+                    borderRadius: '0 !important',
+                    boxShadow: 'none !important',
+                    p: '16pt !important',
+                    mt: '24pt !important',
+                    breakBefore: 'page !important',
+                    pageBreakBefore: 'always !important',
+                    breakInside: 'avoid !important',
+                    pageBreakInside: 'avoid !important',
                   },
                 }}
               >
@@ -713,7 +891,12 @@ export function DocumentDetailView({ document }: Props) {
                     fontFamily: 'var(--font-orbitron), "Orbitron", sans-serif',
                     display: 'block',
                     mb: 1,
-                    '@media print': { color: '#000' },
+                    '@media print': {
+                      color: '#000000 !important',
+                      fontFamily: '"Public Sans", Arial, sans-serif !important',
+                      fontWeight: 'bold !important',
+                      fontSize: '11pt !important',
+                    },
                   }}
                 >
                   FECHAMENTO & MESA DIRETORA DA ASSEMBLEIA
@@ -725,7 +908,12 @@ export function DocumentDetailView({ document }: Props) {
                     color: '#fff',
                     fontWeight: 800,
                     mb: 4,
-                    '@media print': { color: '#000' },
+                    '@media print': {
+                      color: '#000000 !important',
+                      fontSize: '13pt !important',
+                      fontWeight: 'bold !important',
+                      mb: '18pt !important',
+                    },
                   }}
                 >
                   {document.cityState}, {document.approvalDate}
@@ -739,8 +927,9 @@ export function DocumentDetailView({ document }: Props) {
                     gap: 4,
                     mb: 4,
                     '@media print': {
-                      gridTemplateColumns: 'repeat(3, 1fr)',
-                      gap: 2,
+                      gridTemplateColumns: 'repeat(3, 1fr) !important',
+                      gap: '16pt !important',
+                      mb: '16pt !important',
                     },
                   }}
                 >
@@ -753,7 +942,7 @@ export function DocumentDetailView({ document }: Props) {
                           bgcolor: 'rgba(255, 255, 255, 0.25)',
                           mx: 'auto',
                           mb: 1.5,
-                          '@media print': { bgcolor: '#000' },
+                          '@media print': { bgcolor: '#000000 !important', height: '1.5pt !important' },
                         }}
                       />
                       <Typography
@@ -763,7 +952,11 @@ export function DocumentDetailView({ document }: Props) {
                           fontWeight: 700,
                           fontFamily: '"Public Sans", sans-serif',
                           fontSize: '1rem',
-                          '@media print': { color: '#000' },
+                          '@media print': {
+                            color: '#000000 !important',
+                            fontWeight: 'bold !important',
+                            fontSize: '10.5pt !important',
+                          },
                         }}
                       >
                         {sig.name}
@@ -775,7 +968,11 @@ export function DocumentDetailView({ document }: Props) {
                           fontWeight: 600,
                           display: 'block',
                           fontSize: '0.8rem',
-                          '@media print': { color: '#444' },
+                          '@media print': {
+                            color: '#222222 !important',
+                            fontWeight: '600 !important',
+                            fontSize: '8.5pt !important',
+                          },
                         }}
                       >
                         {sig.role}
@@ -787,7 +984,10 @@ export function DocumentDetailView({ document }: Props) {
                             color: 'rgba(255,255,255,0.5)',
                             display: 'block',
                             fontSize: '0.75rem',
-                            '@media print': { color: '#666' },
+                            '@media print': {
+                              color: '#555555 !important',
+                              fontSize: '8pt !important',
+                            },
                           }}
                         >
                           {sig.oab}
@@ -803,10 +1003,18 @@ export function DocumentDetailView({ document }: Props) {
                     sx={{
                       pt: 3,
                       borderTop: '1px dashed rgba(255, 255, 255, 0.1)',
-                      '@media print': { borderTop: '1px dashed #ccc' },
+                      '@media print': { borderTop: '1px dashed #999999 !important', pt: '10pt !important' },
                     }}
                   >
-                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.4)', display: 'block', mb: 0.5, '@media print': { color: '#555' } }}>
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: 'rgba(255,255,255,0.4)',
+                        display: 'block',
+                        mb: 0.5,
+                        '@media print': { color: '#444444 !important', fontSize: '8pt !important', fontWeight: 'bold !important' },
+                      }}
+                    >
                       IMPRESSÃO DIGITAL CRIPTOGRÁFICA DO DOCUMENTO (SHA-256)
                     </Typography>
                     <Typography
@@ -817,7 +1025,7 @@ export function DocumentDetailView({ document }: Props) {
                         fontWeight: 700,
                         wordBreak: 'break-all',
                         fontSize: '0.75rem',
-                        '@media print': { color: '#000' },
+                        '@media print': { color: '#000000 !important', fontSize: '8pt !important' },
                       }}
                     >
                       {document.sha256}

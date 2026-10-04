@@ -95,23 +95,44 @@ export function MainLayout({
 
     return (
       <HeaderSection
+        className="no-print"
         layoutQuery={layoutQuery}
         {...slotProps?.header}
         slots={{ ...headerSlots, ...slotProps?.header?.slots }}
         slotProps={slotProps?.header?.slotProps}
         // Forçamos transparência no Header para ver o fundo através dele
-        sx={{ ...slotProps?.header?.sx, bgcolor: 'transparent' }}
+        sx={{
+          ...slotProps?.header?.sx,
+          bgcolor: 'transparent',
+          '@media print': { display: 'none !important' },
+        }}
       />
     );
   };
 
-  const renderFooter = () => <Footer sx={slotProps?.footer?.sx} layoutQuery={layoutQuery} />;
+  const renderFooter = () => (
+    <Footer
+      className="no-print"
+      sx={{
+        ...slotProps?.footer?.sx,
+        '@media print': { display: 'none !important' },
+      }}
+      layoutQuery={layoutQuery}
+    />
+  );
 
   const renderMain = () => (
     <MainSection
       {...slotProps?.main}
       // Garante que o container principal não tenha cor de fundo
-      sx={{ bgcolor: 'transparent', ...slotProps?.main?.sx }}
+      sx={{
+        bgcolor: 'transparent',
+        ...slotProps?.main?.sx,
+        '@media print': {
+          p: '0 !important',
+          m: '0 !important',
+        },
+      }}
     >
       {children}
     </MainSection>
@@ -134,13 +155,20 @@ export function MainLayout({
       sx={{
         ...sx,
         bgcolor: 'transparent', // Base do layout transparente
+        '@media print': {
+          bgcolor: '#ffffff !important',
+          p: '0 !important',
+          m: '0 !important',
+        },
       }}
     >
       {/* 1. O Fundo Espacial (SpaceScene)
           Como ele tem z-index: -1 e position: fixed no space.tsx, 
           ele ficará atrás de tudo o que for renderizado abaixo.
       */}
-      <SpaceScene />
+      <Box className="no-print" sx={{ '@media print': { display: 'none !important' } }}>
+        <SpaceScene />
+      </Box>
 
       {/* 2. O Conteúdo da Página
           Injetado após o SpaceScene para respeitar a ordem do DOM,

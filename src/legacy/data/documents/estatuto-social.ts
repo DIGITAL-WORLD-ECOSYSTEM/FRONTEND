@@ -231,8 +231,7 @@ export const ESTATUTO_SOCIAL_DATA: ILegalDocumentFull = {
         {
           number: 'Art. 7º',
           title: 'DEMISSÃO DE ASSOCIADOS',
-          caput:
-            'A demissão poderá ocorrer a qualquer tempo, por solicitação voluntária do associado, formalizada por escrito à Diretoria Executiva.',
+          caput: '',
           paragraphs: [
             {
               number: '§ 1º',

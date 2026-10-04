@@ -43,7 +43,9 @@ export function CoreNav() {
 
   return (
     <Box
+      className="no-print"
       sx={{
+        '@media print': { display: 'none !important' },
         zIndex: (theme) => theme.zIndex.speedDial,
         position: 'fixed',
         right: (theme) => theme.spacing(2),

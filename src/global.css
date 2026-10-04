@@ -72,3 +72,44 @@ input, textarea {
   user-select: text !important;
   cursor: text;
 }
+
+/** **************************************
+* Print Engine Styles (A4 Official Legal Publishing)
+*************************************** */
+@media print {
+  /* 1. Ocultar elementos web, headers, footers e widgets */
+  header,
+  footer,
+  nav,
+  aside,
+  [role="banner"],
+  [role="contentinfo"],
+  .MuiSpeedDial-root,
+  .MuiSpeedDialAction-root,
+  .MuiFab-root,
+  .no-print {
+    display: none !important;
+  }
+
+  /* 2. Forçar papel branco e texto preto puro */
+  html, body, #root, #root__layout, main {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    line-height: 1.6 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* 3. Permitir seleção de texto */
+  body {
+    -webkit-user-select: text !important;
+    user-select: text !important;
+  }
+
+  /* 4. Formato de página A4 oficial com margens adequadas */
+  @page {
+    size: A4 portrait;
+    margin: 16mm 16mm 16mm 16mm;
+  }
+}
